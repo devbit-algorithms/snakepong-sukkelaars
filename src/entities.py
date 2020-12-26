@@ -23,30 +23,39 @@ pygame.init()
 # Classes
 class Snake():
     def __init__(self, surface, running):
-        self.__x = 300
-        self.__y = 200        
+        self.positions = [600, 350]     
         self.__update_screen()
         self.__surface = surface
         self.__isRunning = running
+
+    def get_head_position(self):
+        return self.positions[0]
+
+    def __draw_snake(self, surface):
+        for p in self.positions:
+            r = pygame.Rect((p[0], p[1]), (20, 20))
+            pygame.draw.rect(self.__surface, (0, 128, 255), r)
+            pygame.draw.rect(self.__surface, (0, 128, 255), r, 1)
 
     def __update_screen(self):
         pygame.display.flip()
 
     def __update_snake(self):
         pressed = pygame.key.get_pressed()
-        if pressed[pygame.K_UP]: self.__y -= 3
-        if pressed[pygame.K_DOWN]: self.__y += 3
-        if pressed[pygame.K_LEFT]: self.__x -= 3
-        if pressed[pygame.K_RIGHT]: self.__x += 3
+        if pressed[pygame.K_UP]: self.positions[1] -= 3
+        if pressed[pygame.K_DOWN]: self.positions[1] += 3
+        if pressed[pygame.K_LEFT]: self.positions[0] -= 3
+        if pressed[pygame.K_RIGHT]: self.positions[0] += 3
 
         self.game_over()
-        pygame.draw.rect(self.__surface, (0, 128, 255), pygame.Rect(self.__x, self.__y, 10, 10))
+        self.__draw_snake(self.__surface)
+       # pygame.draw.rect(self.__surface, (0, 128, 255), pygame.Rect(self.positions[0], self.positions[1], 15, 15))
 
     def update_snake(self):
         self.__update_snake()
 
     def game_over(self):
-        return (self.__x >= 980 or self.__x < 120 or self.__y >= 680 or self.__y < 120)
+        return (self.positions[0] >= 980 or self.positions[0] < 120 or self.positions[1] >= 680 or self.positions[1] < 120)
 
 
 class Ball:
