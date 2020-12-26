@@ -2,21 +2,23 @@
 import pygame
 from playfield import Playfield
 from entities import Snake
+
 # Initialize the pygame environment and its components/modules
 pygame.init()
 surface = pygame.display.set_mode((1200, 800))
 
 class Game:
     def __init__(self):
-        clock = pygame.time.Clock()
+        self.__clock = pygame.time.Clock()
         #MAKE THE GAME
         print('MAKE THE GAME')
         surface.fill((0,0,0))
 
-        Playfield()
-        Snake()
+        self.__playfield = Playfield()
+        self.__surface = self.__playfield.getSurface()
+        self.__snake = Snake(self.__surface)
         pygame.display.flip()
-        clock.tick(60)
+        self.__clock.tick(60)
 
     def keeprunning(self):
         done = False
@@ -25,3 +27,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                         done = True
+
+            Playfield()
+            self.__snake.update_snake()
+            pygame.display.flip()

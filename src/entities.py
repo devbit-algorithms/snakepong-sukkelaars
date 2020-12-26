@@ -1,19 +1,20 @@
 import pygame
 from playfield import Playfield
 
-screen = pygame.display.set_mode((1200, 800))
 class Snake():
-    def __init__(self):
-        x = 300
-        y = 200
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP: y -= 3
-                elif event.key == pygame.K_DOWN: y += 3
-                elif event.key == pygame.K_LEFT: x -= 3
-                elif event.key == pygame.K_RIGHT: x += 3
-        pygame.draw.rect(screen, (0, 128, 255), pygame.Rect(x, y, 10, 10))
+    def __init__(self, surface):
+        self.__x = 300
+        self.__y = 200        
         self.__update_screen()
+        self.__surface = surface
 
     def __update_screen(self):
         pygame.display.flip()
+
+    def update_snake(self):
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_UP]: self.__y -= 1
+        if pressed[pygame.K_DOWN]: self.__y += 1
+        if pressed[pygame.K_LEFT]: self.__x -= 1
+        if pressed[pygame.K_RIGHT]: self.__x += 1
+        pygame.draw.rect(self.__surface, (0, 128, 255), pygame.Rect(self.__x, self.__y, 10, 100))
