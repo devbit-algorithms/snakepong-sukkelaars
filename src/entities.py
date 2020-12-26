@@ -8,10 +8,10 @@ class Snake():
         y = 200
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP: y -= 3
-                elif event.key == pygame.K_DOWN: y += 3
-                elif event.key == pygame.K_LEFT: x -= 3
-                elif event.key == pygame.K_RIGHT: x += 3
+                if event.key == pygame.K_UP: y -= 10
+                elif event.key == pygame.K_DOWN: y += 10
+                elif event.key == pygame.K_LEFT: x -= 10
+                elif event.key == pygame.K_RIGHT: x += 10
         pygame.draw.rect(screen, (0, 128, 255), pygame.Rect(x, y, 10, 10))
         self.__update_screen()
 
