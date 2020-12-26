@@ -2,7 +2,7 @@
 import pygame
 import pygame_menu
 from pygame import mixer
-from game import Game
+from game import *
 
 # Initialize the pygame environment and its components/modules
 pygame.init()
@@ -10,7 +10,7 @@ surface = pygame.display.set_mode((1200, 800))
 
 # Play background music
 mixer.music.load('assets/menu_music.mp3')
-mixer.music.play(-1)
+#mixer.music.play(-1)
 
 # The Main Menu code where players start their journey
 class MainMenu:
@@ -27,8 +27,9 @@ class MainMenu:
         menu.mainloop(surface)
 
     def start_the_game(self):
-        Game()
-        pass
+        game = Game()
+        game.keeprunning()
+        
 
     def start_settings_menu(self):
         SettingsMenu()

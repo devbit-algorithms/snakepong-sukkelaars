@@ -10,5 +10,14 @@ class Game:
         #MAKE THE GAME
         print('MAKE THE GAME')
         surface.fill((0,0,0))
+
         Playfield()
         pygame.display.flip()
+
+    def keeprunning(self):
+        done = False
+
+        while not done:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                        done = True
