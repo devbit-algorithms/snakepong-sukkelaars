@@ -22,24 +22,12 @@ pygame.init()
 
 # Classes
 class Snake():
-<<<<<<< HEAD
-    def __init__(self):
-        x = 300
-        y = 200
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP: y -= 10
-                elif event.key == pygame.K_DOWN: y += 10
-                elif event.key == pygame.K_LEFT: x -= 10
-                elif event.key == pygame.K_RIGHT: x += 10
-        pygame.draw.rect(screen, (0, 128, 255), pygame.Rect(x, y, 10, 10))
-=======
-    def __init__(self, surface):
+    def __init__(self, surface, running):
         self.__x = 300
         self.__y = 200        
->>>>>>> f8e6b8b7d7a1fd970b95e40e2861fd96ea5dcde9
         self.__update_screen()
         self.__surface = surface
+        self.__isRunning = running
 
     def __update_screen(self):
         pygame.display.flip()
@@ -50,10 +38,16 @@ class Snake():
         if pressed[pygame.K_DOWN]: self.__y += 3
         if pressed[pygame.K_LEFT]: self.__x -= 3
         if pressed[pygame.K_RIGHT]: self.__x += 3
+
+        self.game_over()
         pygame.draw.rect(self.__surface, (0, 128, 255), pygame.Rect(self.__x, self.__y, 10, 10))
 
     def update_snake(self):
         self.__update_snake()
+
+    def game_over(self):
+        return (self.__x >= 980 or self.__x < 120 or self.__y >= 680 or self.__y < 120)
+
 
 class Ball:
     def __init__(self, surface):
