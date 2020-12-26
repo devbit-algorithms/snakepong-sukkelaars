@@ -1,24 +1,25 @@
 # Imports necessary for running this file
 import pygame
 from playfield import Playfield
-from entities import Snake
+from entities import Snake, Ball
 
 # Initialize the pygame environment and its components/modules
 pygame.init()
-surface = pygame.display.set_mode((1200, 800))
 
+
+
+# Classes
 class Game:
-    def __init__(self):
+    def __init__(self, surface):
         self.__clock = pygame.time.Clock()
+        self.__surface = surface
         #MAKE THE GAME
         print('MAKE THE GAME')
         surface.fill((0,0,0))
 
-        self.__playfield = Playfield()
+        self.__playfield = Playfield(self.__surface)
         self.__surface = self.__playfield.getSurface()
         self.__snake = Snake(self.__surface)
-        pygame.display.flip()
-        self.__clock.tick(60)
 
     def keeprunning(self):
         done = False
@@ -28,6 +29,9 @@ class Game:
                 if event.type == pygame.QUIT:
                         done = True
 
-            Playfield()
+            self.__surface.fill((0,0,0))
+            Playfield(self.__surface)
             self.__snake.update_snake()
+            self.__ball = Ball(self.__surface)
             pygame.display.flip()
+            self.__clock.tick(60)

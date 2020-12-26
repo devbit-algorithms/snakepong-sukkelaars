@@ -1,9 +1,15 @@
+# Imports necessary for running this file
 import pygame
 
+# Initialize the pygame environment and its components/modules
+pygame.init()
 
+
+
+# Classes
 class Playfield:
-    def __init__(self):
-        self.__surface = pygame.display.set_mode((1200, 800))
+    def __init__(self, surface):
+        self.__surface = surface
 
         pygame.display.set_caption("SnakePong")
         WHITE = (255, 255, 255)
