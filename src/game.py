@@ -35,7 +35,7 @@ class Game:
 
             if self.__snake.game_over():
                 self.__isRunning = False
-            elif (self.__snake.get_head_position()[0] == self.__food.get_food_location()[0]):
+            elif (self.__snake.get_head_position()[0] == self.__food.get_food_location()[0]) and (self.__snake.get_head_position()[1] == self.__food.get_food_location()[1]):
                 self.__snake.set_length()
                 self.__food.update_food()
             self.__surface.fill((0,0,0))

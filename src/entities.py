@@ -21,7 +21,7 @@ pygame.init()
 
 
 # Classes
-class Snake():
+class Snake(pygame.sprite.Sprite):
     def __init__(self, surface, running):
         self.__positions = [(600, 400)]
         self.__length = 1
@@ -95,36 +95,44 @@ class Ball(pygame.sprite.Sprite):
     def __init__(self, surface):
         self.__surface = surface
         self.__position = [(400, 400)]
+        self.__set_velocity()
 
     def __set_velocity(self):
-        self.__velocity = [random.randint(4, 8), random.randint(-8, 8)]
+        self.__velocity = [random.randint(-8, 8), random.randint(-8, 8)]
 
     def get_current_position(self):
         return self.__position[0]
 
     def __move_ball(self):
-        self.__set_velocity()
         newPos = ((self.get_current_position()[0] + self.__velocity[0]), (self.get_current_position()[1] + self.__velocity[1]))
 
-        if newPos[0] < 170:
-            newPos = (170, (self.get_current_position()[1] + self.__velocity[1]))
+        if newPos[0] < 180:
+            self.__velocity[0] = -self.__velocity[0]
+            self.__move_ball()
         elif newPos[0] > 1030:
-            newPos = (1030, (self.get_current_position()[1] + self.__velocity[1]))
+            self.__velocity[0] = -self.__velocity[0]
+            self.__move_ball()
         elif newPos[1] > 680:
-            ((self.get_current_position()[0] + self.__velocity[0]), 680)
-        elif newPos[1] < 120:
-            ((self.get_current_position()[0] + self.__velocity[0]), 120)
+            self.__velocity[1] = -self.__velocity[1]
+            self.__move_ball()
+        elif newPos[1] < 125:
+            self.__velocity[1] = -self.__velocity[1]
+            self.__move_ball()
 
         self.__position.insert(0, newPos)
         if len(self.__position) > 1:
             self.__position.pop()
 
     def __draw_ball(self):
-        pygame.draw.circle(self.__surface, (0, 128, 255), (self.get_current_position()[0], self.get_current_position()[1]), 10)
+        self.__image = pygame.draw.circle(self.__surface, (0, 128, 255), (self.get_current_position()[0], self.get_current_position()[1]), 10)
 
     def update_ball(self):
         self.__move_ball()
         self.__draw_ball()
+    
+    def bounce(self):
+        self.__velocity[0] = -self.__velocity[0]
+        self.__velocity[1] = random.randint(-8,8)
         
 
 
@@ -162,8 +170,9 @@ class Paddle(pygame.sprite.Sprite):
         self.__draw_paddle()
 
 
-class Food:
+class Food(pygame.sprite.Sprite):
     def __init__(self, surface):
+        super().__init__
         self.__color = (223, 163, 49)
         self.__surface = surface
         self.__create_frozen_food()
@@ -173,7 +182,7 @@ class Food:
         self.__position = (random.randint(171, 449) * 2, random.randint(121, 299) * 2)
     
     def __cook_food(self):
-        food = pygame.Rect((self.__position[0], self.__position[1]), (10, 10))
+        food = pygame.Rect((self.__position[0], self.__position[1]), (20, 20))
         pygame.draw.rect(self.__surface, self.__color, food)
         pygame.draw.rect(self.__surface, (93, 216, 228), food, 1)
 

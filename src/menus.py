@@ -16,6 +16,7 @@ mixer.music.load('assets/menu_music.mp3')
 # The Main Menu code where players start their journey
 class MainMenu:
     def __init__(self):
+        pygame.display.set_caption("SnakePong - The Main Menu")
         self.__surface = pygame.display.set_mode((1200, 800))
         self.__menu = pygame_menu.Menu(800, 600, 'Welcome to SnakePong!', theme=pygame_menu.themes.THEME_GREEN)
 
@@ -39,6 +40,7 @@ class MainMenu:
 # The menu used for changing the settings
 class SettingsMenu:
     def __init__(self, surface):
+        pygame.display.set_caption("SnakePong - The Settings Menu")
         menu = pygame_menu.Menu(800, 600, 'Welcome to SnakePong!', theme=pygame_menu.themes.THEME_SOLARIZED)
         self.__surface = surface
 
