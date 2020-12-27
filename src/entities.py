@@ -21,7 +21,7 @@ pygame.init()
 
 
 # Classes
-class Snake(pygame.sprite.Sprite):
+class Snake:
     def __init__(self, surface, running):
         self.__positions = [(600, 400)]
         self.__length = 1
@@ -83,6 +83,9 @@ class Snake(pygame.sprite.Sprite):
     def get_head_position(self):
         return self.__get_head_position()
 
+    def get_head(self):
+        return pygame.Rect((self.__positions[0][0], self.__positions[0][1]), (20, 20))
+
     def game_over(self):
         return (self.__get_head_position()[0] > 1030 or self.__get_head_position()[0] < 170 or self.__get_head_position()[1] > 678 
         or self.__get_head_position()[1] < 122 or self.__isRunning == False)
@@ -91,7 +94,7 @@ class Snake(pygame.sprite.Sprite):
         self.__length += 5
 
 
-class Ball(pygame.sprite.Sprite):
+class Ball:
     def __init__(self, surface):
         self.__surface = surface
         self.__position = [(400, 400)]
@@ -136,9 +139,8 @@ class Ball(pygame.sprite.Sprite):
         
 
 
-class Paddle(pygame.sprite.Sprite):
+class Paddle:
     def __init__(self, surface):
-        super().__init__
         self.__surface = surface
         self.__position = [(220, 350)]
         self.__paddle = pygame.draw.rect(self.__surface, (0, 128, 255), pygame.Rect((self.get_current_position()[0], self.get_current_position()[1]), (10, 100)))
@@ -148,7 +150,7 @@ class Paddle(pygame.sprite.Sprite):
         x, y = self.__direction
         newPos = ((self.get_current_position()[0] + (x * 2)), (self.get_current_position()[1] + (y * 2)))
         if newPos[1] > 680:
-            newPos = ((self.get_current_position()[0] + (x * 2)), 680)
+            newPos = ((self.get_current_position()[0] + (x * 2)), 660)
         elif newPos[1] < 120:
             newPos = ((self.get_current_position()[0] + (x * 2)), 120)
 
@@ -170,9 +172,8 @@ class Paddle(pygame.sprite.Sprite):
         self.__draw_paddle()
 
 
-class Food(pygame.sprite.Sprite):
+class Food:
     def __init__(self, surface):
-        super().__init__
         self.__color = (223, 163, 49)
         self.__surface = surface
         self.__create_frozen_food()
@@ -182,9 +183,9 @@ class Food(pygame.sprite.Sprite):
         self.__position = (random.randint(171, 449) * 2, random.randint(121, 299) * 2)
     
     def __cook_food(self):
-        food = pygame.Rect((self.__position[0], self.__position[1]), (20, 20))
-        pygame.draw.rect(self.__surface, self.__color, food)
-        pygame.draw.rect(self.__surface, (93, 216, 228), food, 1)
+        self.__food = pygame.Rect((self.__position[0], self.__position[1]), (10, 10))
+        pygame.draw.rect(self.__surface, self.__color, self.__food)
+        pygame.draw.rect(self.__surface, (93, 216, 228), self.__food, 1)
 
     def update_food(self):
         self.__create_frozen_food()
@@ -192,6 +193,9 @@ class Food(pygame.sprite.Sprite):
 
     def look_for_food(self):
         self.__cook_food()
+
+    def show_food(self):
+        return self.__food
 
     def get_food_location(self):
         return self.__position
