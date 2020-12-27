@@ -21,9 +21,9 @@ class Game:
         self.__surface = self.__playfield.getSurface()
         self.__snake = Snake(self.__surface,self.__isRunning)
         self.__food = Food(self.__surface)
+        self.__ball = Ball(self.__surface)
         self.__paddle = Paddle(self.__surface)
-        self.__paddle.get_paddle().x = 20
-        self.__paddle.get_paddle().y = 20
+
 
 
     def keeprunning(self):
@@ -35,7 +35,7 @@ class Game:
 
             if self.__snake.game_over():
                 self.__isRunning = False
-            elif self.__food.get_food_location()[0] - 3 <= self.__snake.get_head_position()[0] <= self.__food.get_food_location()[0] + 3:
+            elif (self.__snake.get_head_position()[0] == self.__food.get_food_location()[0]):
                 self.__snake.set_length()
                 self.__food.update_food()
             self.__surface.fill((0,0,0))
@@ -43,6 +43,6 @@ class Game:
             self.__snake.update_snake()
             self.__food.look_for_food()
             self.__paddle.update_paddle()
-            self.__ball = Ball(self.__surface)
+            self.__ball.update_ball()
             pygame.display.flip()
             self.__clock.tick(60)

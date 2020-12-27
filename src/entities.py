@@ -88,15 +88,44 @@ class Snake():
         or self.__get_head_position()[1] < 122 or self.__isRunning == False)
 
     def set_length(self):
-        self.__length += 4
+        self.__length += 5
 
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self, surface):
         self.__surface = surface
-        self.__image = pygame.Surface([10, 10])
+        self.__position = [(400, 400)]
+
+    def __set_velocity(self):
         self.__velocity = [random.randint(4, 8), random.randint(-8, 8)]
-        pygame.draw.circle(self.__surface, (0, 128, 255), (200, 100), 10)
+
+    def get_current_position(self):
+        return self.__position[0]
+
+    def __move_ball(self):
+        self.__set_velocity()
+        newPos = ((self.get_current_position()[0] + self.__velocity[0]), (self.get_current_position()[1] + self.__velocity[1]))
+
+        if newPos[0] < 170:
+            newPos = (170, (self.get_current_position()[1] + self.__velocity[1]))
+        elif newPos[0] > 1030:
+            newPos = (1030, (self.get_current_position()[1] + self.__velocity[1]))
+        elif newPos[1] > 680:
+            ((self.get_current_position()[0] + self.__velocity[0]), 680)
+        elif newPos[1] < 120:
+            ((self.get_current_position()[0] + self.__velocity[0]), 120)
+
+        self.__position.insert(0, newPos)
+        if len(self.__position) > 1:
+            self.__position.pop()
+
+    def __draw_ball(self):
+        pygame.draw.circle(self.__surface, (0, 128, 255), (self.get_current_position()[0], self.get_current_position()[1]), 10)
+
+    def update_ball(self):
+        self.__move_ball()
+        self.__draw_ball()
+        
 
 
 class Paddle(pygame.sprite.Sprite):
