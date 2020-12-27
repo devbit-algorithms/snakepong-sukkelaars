@@ -101,7 +101,7 @@ class Ball:
         self.__set_velocity()
 
     def __set_velocity(self):
-        self.__velocity = [random.randint(-8, 8), random.randint(-8, 8)]
+        self.__velocity = [random.randint(-4, 4), random.randint(-4, 4)]
 
     def get_current_position(self):
         return self.__position[0]
@@ -143,16 +143,19 @@ class Paddle:
     def __init__(self, surface):
         self.__surface = surface
         self.__position = [(220, 350)]
-        self.__paddle = pygame.draw.rect(self.__surface, (0, 128, 255), pygame.Rect((self.get_current_position()[0], self.get_current_position()[1]), (10, 100)))
 
     def __move_paddle(self):
         self.__direction = random.choice([(0, 4), (0, -4), (0, 5), (0, -5), (0, 3), (0, -3)])
         x, y = self.__direction
         newPos = ((self.get_current_position()[0] + (x * 2)), (self.get_current_position()[1] + (y * 2)))
-        if newPos[1] > 680:
-            newPos = ((self.get_current_position()[0] + (x * 2)), 660)
+        print(self.get_current_position())
+        print(newPos)
+        if newPos[1] > 600:
+            newPos = ((self.get_current_position()[0] + (x * 2)), 600)
         elif newPos[1] < 120:
             newPos = ((self.get_current_position()[0] + (x * 2)), 120)
+
+        print(newPos)
 
         self.__position.insert(0, newPos)
         if len(self.__position) > 1:
@@ -165,7 +168,8 @@ class Paddle:
         return self.__paddle
 
     def __draw_paddle(self):
-        pygame.draw.rect(self.__surface, (0, 128, 255), pygame.Rect((self.get_current_position()[0], self.get_current_position()[1]), (10, 100)))
+        self.__paddle = pygame.Rect(self.get_current_position()[0], self.get_current_position()[1], 10, 100)
+        pygame.draw.rect(self.__surface, (0, 128, 255), self.__paddle)
 
     def update_paddle(self):
         self.__move_paddle()
