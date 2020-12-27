@@ -91,10 +91,47 @@ class Snake():
         self.__length += 4
 
 
-class Ball:
+class Ball(pygame.sprite.Sprite):
     def __init__(self, surface):
         self.__surface = surface
+        self.__image = pygame.Surface([10, 10])
+        self.__velocity = [random.randint(4, 8), random.randint(-8, 8)]
         pygame.draw.circle(self.__surface, (0, 128, 255), (200, 100), 10)
+
+
+class Paddle(pygame.sprite.Sprite):
+    def __init__(self, surface):
+        super().__init__
+        self.__surface = surface
+        self.__position = [(220, 350)]
+        self.__paddle = pygame.draw.rect(self.__surface, (0, 128, 255), pygame.Rect((self.get_current_position()[0], self.get_current_position()[1]), (10, 100)))
+
+    def __move_paddle(self):
+        self.__direction = random.choice([(0, 4), (0, -4), (0, 5), (0, -5), (0, 3), (0, -3)])
+        x, y = self.__direction
+        newPos = ((self.get_current_position()[0] + (x * 2)), (self.get_current_position()[1] + (y * 2)))
+        if newPos[1] > 680:
+            newPos = ((self.get_current_position()[0] + (x * 2)), 680)
+        elif newPos[1] < 120:
+            newPos = ((self.get_current_position()[0] + (x * 2)), 120)
+
+        self.__position.insert(0, newPos)
+        if len(self.__position) > 1:
+            self.__position.pop()
+
+    def get_current_position(self):
+        return self.__position[0]
+    
+    def get_paddle(self):
+        return self.__paddle
+
+    def __draw_paddle(self):
+        pygame.draw.rect(self.__surface, (0, 128, 255), pygame.Rect((self.get_current_position()[0], self.get_current_position()[1]), (10, 100)))
+
+    def update_paddle(self):
+        self.__move_paddle()
+        self.__draw_paddle()
+
 
 class Food:
     def __init__(self, surface):

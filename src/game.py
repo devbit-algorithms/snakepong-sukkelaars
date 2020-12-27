@@ -1,7 +1,7 @@
 # Imports necessary for running this file
 import pygame
 from playfield import Playfield
-from entities import Snake, Ball, Food
+from entities import Snake, Ball, Food, Paddle
 
 # Initialize the pygame environment and its components/modules
 pygame.init()
@@ -21,6 +21,10 @@ class Game:
         self.__surface = self.__playfield.getSurface()
         self.__snake = Snake(self.__surface,self.__isRunning)
         self.__food = Food(self.__surface)
+        self.__paddle = Paddle(self.__surface)
+        self.__paddle.get_paddle().x = 20
+        self.__paddle.get_paddle().y = 20
+
 
     def keeprunning(self):
 
@@ -38,6 +42,7 @@ class Game:
             Playfield(self.__surface)
             self.__snake.update_snake()
             self.__food.look_for_food()
+            self.__paddle.update_paddle()
             self.__ball = Ball(self.__surface)
             pygame.display.flip()
             self.__clock.tick(60)
