@@ -38,6 +38,12 @@ class Game:
             elif self.__snake.get_head().colliderect(self.__food.show_food()):
                 self.__snake.set_length()
                 self.__food.update_food()
+            elif self.__paddle.get_paddle().colliderect(self.__ball.get_ball()):
+                self.__ball.bounce()
+            for segment in self.__snake.get_snake():
+                if segment.colliderect(self.__ball.get_ball()):
+                    self.__ball.bounce()
+            
             self.__surface.fill((0,0,0))
             Playfield(self.__surface)
             self.__snake.update_snake()

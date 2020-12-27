@@ -86,6 +86,12 @@ class Snake:
     def get_head(self):
         return pygame.Rect((self.__positions[0][0], self.__positions[0][1]), (20, 20))
 
+    def get_snake(self):
+        self.full_snake = []
+        for pos in self.__positions:
+            self.full_snake.append(pygame.Rect((pos[0], pos[1]), (20, 20)))
+        return self.full_snake
+
     def game_over(self):
         return (self.__get_head_position()[0] > 1030 or self.__get_head_position()[0] < 170 or self.__get_head_position()[1] > 678 
         or self.__get_head_position()[1] < 122 or self.__isRunning == False)
@@ -99,9 +105,10 @@ class Ball:
         self.__surface = surface
         self.__position = [(400, 400)]
         self.__set_velocity()
+        self.__ball = pygame.Rect(self.get_current_position()[0], self.get_current_position()[1], 10, 10)
 
     def __set_velocity(self):
-        self.__velocity = [random.randint(-4, 4), random.randint(-4, 4)]
+        self.__velocity = [random.randint(-2, 2), random.randint(-2, 2)]
 
     def get_current_position(self):
         return self.__position[0]
@@ -125,9 +132,10 @@ class Ball:
         self.__position.insert(0, newPos)
         if len(self.__position) > 1:
             self.__position.pop()
+        self.__ball = pygame.Rect(self.get_current_position()[0], self.get_current_position()[1], 10, 10)
 
     def __draw_ball(self):
-        self.__image = pygame.draw.circle(self.__surface, (0, 128, 255), (self.get_current_position()[0], self.get_current_position()[1]), 10)
+        self.__image = pygame.draw.rect(self.__surface, (0, 128, 255), self.__ball)
 
     def update_ball(self):
         self.__move_ball()
@@ -136,6 +144,9 @@ class Ball:
     def bounce(self):
         self.__velocity[0] = -self.__velocity[0]
         self.__velocity[1] = random.randint(-8,8)
+
+    def get_ball(self):
+        return self.__ball
         
 
 
@@ -143,19 +154,16 @@ class Paddle:
     def __init__(self, surface):
         self.__surface = surface
         self.__position = [(220, 350)]
+        self.__paddle = pygame.Rect(self.get_current_position()[0], self.get_current_position()[1], 10, 100)
 
     def __move_paddle(self):
         self.__direction = random.choice([(0, 4), (0, -4), (0, 5), (0, -5), (0, 3), (0, -3)])
         x, y = self.__direction
         newPos = ((self.get_current_position()[0] + (x * 2)), (self.get_current_position()[1] + (y * 2)))
-        print(self.get_current_position())
-        print(newPos)
         if newPos[1] > 600:
             newPos = ((self.get_current_position()[0] + (x * 2)), 600)
         elif newPos[1] < 120:
             newPos = ((self.get_current_position()[0] + (x * 2)), 120)
-
-        print(newPos)
 
         self.__position.insert(0, newPos)
         if len(self.__position) > 1:
