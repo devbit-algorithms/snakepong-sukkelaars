@@ -2,7 +2,7 @@
 import pygame
 import pygame_menu
 from pygame import mixer
-from game import *
+from game import Game
 
 # Initialize the pygame environment and its components/modules
 pygame.init()

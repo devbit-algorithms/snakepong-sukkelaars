@@ -42,7 +42,7 @@ class Snake():
     def __move_snake(self):
         beak = self.__get_head_position()
         x, y = self.__direction
-        newBeak = (((beak[0] + (x * 2)) % 800), (beak[1] + (y * 2)) % 1200)
+        newBeak = ((beak[0] + (x * 2)), (beak[1] + (y * 2)))
 
         if len(self.__positions) > 2 and newBeak in self.__positions[2:]:
             self.__isRunning = False
@@ -74,7 +74,6 @@ class Snake():
 
         self.game_over()
         self.__draw_snake(self.__surface)
-       # pygame.draw.rect(self.__surface, (0, 128, 255), pygame.Rect(self.positions[0], self.positions[1], 15, 15))
 
 # Public methods
     def update_snake(self):
@@ -85,8 +84,8 @@ class Snake():
         return self.__get_head_position()
 
     def game_over(self):
-        return (self.__get_head_position()[0] >= 980 or self.__get_head_position()[0] < 120 or self.__get_head_position()[1] >= 680 
-        or self.__get_head_position()[1] < 120 or self.__isRunning == False)
+        return (self.__get_head_position()[0] > 1030 or self.__get_head_position()[0] < 170 or self.__get_head_position()[1] > 678 
+        or self.__get_head_position()[1] < 122 or self.__isRunning == False)
 
 
 class Ball:
