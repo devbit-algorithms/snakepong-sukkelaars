@@ -24,7 +24,7 @@ pygame.init()
 class Snake:
     def __init__(self, surface, running):
         self.__positions = [(600, 400)]
-        self.__length = 1
+        self.__length = 10
         self.__direction = random.choice([(0, 1), (0, -1), (-1, 0), (1, 0)])
         self.__update_screen()
         self.__surface = surface
