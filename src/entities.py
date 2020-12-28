@@ -24,7 +24,7 @@ pygame.init()
 class Snake:
     def __init__(self, surface, running):
         self.__positions = [(600, 400)]
-        self.__length = 10
+        self.__length = 15
         self.__direction = random.choice([(0, 1), (0, -1), (-1, 0), (1, 0)])
         self.__update_screen()
         self.__surface = surface
@@ -102,6 +102,7 @@ class Snake:
 
 class Ball:
     def __init__(self, surface):
+        self.__score = 0
         self.__surface = surface
         self.__position = [(400, 400)]
         self.__set_velocity()
@@ -119,6 +120,7 @@ class Ball:
         if newPos[0] < 180:
             self.__velocity[0] = -self.__velocity[0]
             self.__move_ball()
+            self.__score += 1
         elif newPos[0] > 1030:
             self.__velocity[0] = -self.__velocity[0]
             self.__move_ball()
@@ -133,6 +135,10 @@ class Ball:
         if len(self.__position) > 1:
             self.__position.pop()
         self.__ball = pygame.Rect(self.get_current_position()[0], self.get_current_position()[1], 10, 10)
+
+        font = pygame.font.Font(None, 74)
+        text = font.render(str(self.__score), 1, (255,255,255))
+        self.__surface.blit(text, (250,10))
 
     def __draw_ball(self):
         self.__image = pygame.draw.rect(self.__surface, (0, 128, 255), self.__ball)
@@ -211,3 +217,12 @@ class Food:
 
     def get_food_location(self):
         return self.__position
+
+    class Scoreboard:
+        def __init__(self):
+            self.__score = 0
+
+        def score(self):
+            if Ball.get_current_position[0]>=700:
+                self.__score += 1
+
