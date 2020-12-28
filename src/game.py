@@ -2,6 +2,7 @@
 import pygame
 from playfield import Playfield
 from entities import Snake, Ball, Food, Paddle
+from tkinter import messagebox, Tk
 
 # Initialize the pygame environment and its components/modules
 pygame.init()
@@ -38,6 +39,8 @@ class Game:
 
             if self.__snake.game_over():
                 self.__isRunning = False
+                Tk().wm_withdraw() #to hide the main window
+                messagebox.showinfo('GAME OVER - You a dead snake bruv','I admit that I touched myself/walls :\'(')
             elif self.__snake.get_head().colliderect(self.__food.show_food()):
                 self.__snake.set_length()
                 self.__food.update_food()
