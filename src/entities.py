@@ -102,7 +102,7 @@ class Snake:
 
 class Ball:
     def __init__(self, surface):
-        self.__score = 0
+        self.score = 0
         self.__surface = surface
         self.__position = [(400, 400)]
         self.__set_velocity()
@@ -120,7 +120,7 @@ class Ball:
         if newPos[0] < 180:
             self.__velocity[0] = -self.__velocity[0]
             self.__move_ball()
-            self.__score += 1
+            self.score += 1
         elif newPos[0] > 1030:
             self.__velocity[0] = -self.__velocity[0]
             self.__move_ball()
@@ -136,10 +136,6 @@ class Ball:
             self.__position.pop()
         self.__ball = pygame.Rect(self.get_current_position()[0], self.get_current_position()[1], 10, 10)
 
-        font = pygame.font.Font(None, 74)
-        text = font.render(str(self.__score), 1, (255,255,255))
-        self.__surface.blit(text, (250,10))
-
     def __draw_ball(self):
         self.__image = pygame.draw.rect(self.__surface, (0, 128, 255), self.__ball)
 
@@ -153,6 +149,9 @@ class Ball:
 
     def get_ball(self):
         return self.__ball
+    
+    def get_score(self):
+        return self.score
         
 
 

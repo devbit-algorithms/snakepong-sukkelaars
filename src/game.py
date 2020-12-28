@@ -10,18 +10,21 @@ pygame.init()
 
 # Classes
 class Game:
-    def __init__(self, surface):
+    def __init__(self, surface, username):
+        #Initialize variables
         self.__clock = pygame.time.Clock()
         self.__surface = surface
         self.__isRunning = True
+        self.__username = username
 
         surface.fill((0,0,0))
 
-        self.__playfield = Playfield(self.__surface)
+        self.__ball = Ball(self.__surface)
+        self.__score = self.__ball.get_score()
+        self.__playfield = Playfield(self.__surface, self.__username, self.__score)
         self.__surface = self.__playfield.getSurface()
         self.__snake = Snake(self.__surface,self.__isRunning)
         self.__food = Food(self.__surface)
-        self.__ball = Ball(self.__surface)
         self.__paddle = Paddle(self.__surface)
 
 
@@ -45,7 +48,8 @@ class Game:
                     self.__ball.bounce()
             
             self.__surface.fill((0,0,0))
-            Playfield(self.__surface)
+            self.__score = self.__ball.get_score()
+            Playfield(self.__surface, self.__username, self.__score)
             self.__snake.update_snake()
             self.__food.look_for_food()
             self.__paddle.update_paddle()

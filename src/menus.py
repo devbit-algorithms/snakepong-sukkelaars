@@ -3,6 +3,7 @@ import pygame
 import pygame_menu
 from pygame import mixer
 from game import Game
+import json
 
 # Initialize the pygame environment and its components/modules
 pygame.init()
@@ -21,7 +22,7 @@ class MainMenu:
         self.__menu = pygame_menu.Menu(800, 600, 'Welcome to SnakePong!', theme=pygame_menu.themes.THEME_GREEN)
 
         # Creating the menu widgets
-        self.__menu.add_text_input('Username :', default='Player X')
+        self.__username = self.__menu.add_text_input('Username :', default='Player X')
         self.__menu.add_button('Settings', self.__start_settings_menu)
         self.__menu.add_button('Play', self.__start_the_game)
         self.__menu.add_button('Quit', pygame_menu.events.EXIT)
@@ -30,8 +31,10 @@ class MainMenu:
         self.__menu.mainloop(self.__surface)
 
     def __start_the_game(self):
-        game = Game(self.__surface)
+        self.__username = self.__username.get_value()  
+        game = Game(self.__surface, self.__username)
         game.keeprunning()
+        MainMenu()
         
 
     def __start_settings_menu(self):
@@ -44,6 +47,7 @@ class SettingsMenu:
         menu = pygame_menu.Menu(800, 600, 'Welcome to SnakePong!', theme=pygame_menu.themes.THEME_SOLARIZED)
         self.__surface = surface
 
+        self.__numberOfPlayers = menu.add_selector('Players: ', [('1 Player', 1), ('2 Players', 2)])
         menu.add_selector('Difficulty: ', [('I\'m kinda slow', 1), ('Easy', 2), ('Average', 3), ('Hard', 4), ('Lowkey a professional', 5), ('Insane #NoLife', 6)], onchange=self.__set_difficulty)
         menu.add_selector('Size of playing field: ', [('Small', 1), ('Medium', 2), ('Large', 3), ('Yo Mamah', 4)] )
         menu.add_button('Music: Press to (de-)activate music', self.__set_music)
@@ -71,4 +75,5 @@ class SettingsMenu:
             mixer.music.play()
 
     def __set_sounds(self):
+        # Implement sounds to the game
         pass
