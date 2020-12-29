@@ -1,6 +1,7 @@
 # Imports necessary for running this file
 import pygame
 from playfield import Playfield
+from pygame import mixer
 from entities import Snake, Ball, Food, Paddle
 from tkinter import messagebox, Tk
 
@@ -11,28 +12,30 @@ pygame.init()
 
 # Classes
 class Game:
-    def __init__(self, surface, username, numberOfPlayers):
-        #Initialize variables
+    def __init__(self, surface, username, numberOfPlayers, soundsOn):
+        # Initialize variables
         self.__clock = pygame.time.Clock()
         self.__surface = surface
         self.__isRunning = True
         self.__username = username
         self.__numberOfPlayers = numberOfPlayers
+        self.__soundsOn = soundsOn
 
-        surface.fill((0,0,0))
-
+        # Initialize the game entities
         self.__ball = Ball(self.__surface)
         self.__score = self.__ball.get_score()
         self.__playfield = Playfield(self.__surface, self.__username, self.__score)
         self.__surface = self.__playfield.getSurface()
         self.__snake = Snake(self.__surface,self.__isRunning)
         self.__food = Food(self.__surface)
+
+        # Check if multiplayer or not
         if self.__numberOfPlayers == 0:
             self.__paddle = Paddle(self.__surface)
         else:
             self.__paddle = Paddle(self.__surface, True)
 
-    def keeprunning(self):
+    def start_game(self):
 
         while self.__isRunning:
             for event in pygame.event.get():
@@ -41,17 +44,21 @@ class Game:
 
             if self.__snake.game_over():
                 self.__isRunning = False
-                # Pop-up screen using tkinter library
-                Tk().wm_withdraw()
+                mixer.music.stop()
+                self.__play_gameover_sound()
+                Tk().wm_withdraw()                  # Pop-up screen using tkinter library
                 messagebox.showinfo('GAME OVER - You a dead snake bruv','I admit that I touched myself/walls :\'(')
             elif self.__snake.get_head().colliderect(self.__food.show_food()):
                 self.__snake.set_length()
+                self.__play_touch_sound()
                 self.__food.update_food()
             elif self.__paddle.get_paddle().colliderect(self.__ball.get_ball()):
                 self.__ball.bounce()
+                self.__play_touch_sound()
             for segment in self.__snake.get_snake():
                 if segment.colliderect(self.__ball.get_ball()):
                     self.__ball.bounce()
+                    self.__play_touch_sound()
             
             self.__surface.fill((0,0,0))
             self.__score = self.__ball.get_score()
@@ -62,3 +69,15 @@ class Game:
             self.__ball.update_ball()
             pygame.display.flip()
             self.__clock.tick(60)
+
+    # Check if sounds are activated or not and then play them accordingly
+    def __play_touch_sound(self):
+        if self.__soundsOn:
+            touch = mixer.Sound("assets/touch_sound.wav")
+            mixer.Sound.play(touch)
+
+    def __play_gameover_sound(self):
+        if self.__soundsOn:
+            gameover = mixer.Sound("assets/game_over_sound.wav")
+            mixer.Sound.play(gameover)
+

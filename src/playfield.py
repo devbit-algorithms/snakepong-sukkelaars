@@ -20,15 +20,12 @@ class Playfield:
         WHITE = (255, 255, 255)
         BLACK = (0, 0, 0)
 
-        pygame.draw.rect(self.__surface, BLACK, pygame.Rect(0, 0, 1200, 800))
-        pygame.draw.rect(self.__surface, WHITE, pygame.Rect(150, 100, 900, 20)) #top border
-        pygame.draw.rect(self.__surface, WHITE, pygame.Rect(150, 100, 20, 600)) #left border
-        pygame.draw.rect(self.__surface, WHITE, pygame.Rect(150, 700, 920, 20)) #bottom border
-        pygame.draw.rect(self.__surface, WHITE, pygame.Rect(1050, 100, 20, 600)) #right border
+        pygame.draw.rect(self.__surface, BLACK, pygame.Rect(0, 0, 1200, 800))       # Black background
+        pygame.draw.rect(self.__surface, WHITE, pygame.Rect(150, 100, 900, 20))     # Top border
+        pygame.draw.rect(self.__surface, WHITE, pygame.Rect(150, 100, 20, 600))     # Left border
+        pygame.draw.rect(self.__surface, WHITE, pygame.Rect(150, 700, 920, 20))     # Bottom border
+        pygame.draw.rect(self.__surface, WHITE, pygame.Rect(1050, 100, 20, 600))    # Right border
         self.__draw_score_username()
-
-    def __update_screen(self):
-        pygame.display.flip()
 
     def __getSurface(self):
         return self.__surface
