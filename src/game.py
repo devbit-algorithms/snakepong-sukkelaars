@@ -11,12 +11,13 @@ pygame.init()
 
 # Classes
 class Game:
-    def __init__(self, surface, username):
+    def __init__(self, surface, username, numberOfPlayers):
         #Initialize variables
         self.__clock = pygame.time.Clock()
         self.__surface = surface
         self.__isRunning = True
         self.__username = username
+        self.__numberOfPlayers = numberOfPlayers
 
         surface.fill((0,0,0))
 
@@ -26,9 +27,10 @@ class Game:
         self.__surface = self.__playfield.getSurface()
         self.__snake = Snake(self.__surface,self.__isRunning)
         self.__food = Food(self.__surface)
-        self.__paddle = Paddle(self.__surface)
-
-
+        if self.__numberOfPlayers == 0:
+            self.__paddle = Paddle(self.__surface)
+        else:
+            self.__paddle = Paddle(self.__surface, True)
 
     def keeprunning(self):
 
@@ -39,7 +41,8 @@ class Game:
 
             if self.__snake.game_over():
                 self.__isRunning = False
-                Tk().wm_withdraw() #to hide the main window
+                # Pop-up screen using tkinter library
+                Tk().wm_withdraw()
                 messagebox.showinfo('GAME OVER - You a dead snake bruv','I admit that I touched myself/walls :\'(')
             elif self.__snake.get_head().colliderect(self.__food.show_food()):
                 self.__snake.set_length()

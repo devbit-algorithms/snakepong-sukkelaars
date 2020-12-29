@@ -65,11 +65,11 @@ class Snake:
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_UP]:
             self.__turn_snake((0, -1))
-        if pressed[pygame.K_DOWN]:
+        elif pressed[pygame.K_DOWN]:
             self.__turn_snake((0 , 1))
-        if pressed[pygame.K_LEFT]:
+        elif pressed[pygame.K_LEFT]:
             self.__turn_snake((-1, 0))
-        if pressed[pygame.K_RIGHT]:
+        elif pressed[pygame.K_RIGHT]:
             self.__turn_snake((1, 0))
 
         self.game_over()
@@ -156,21 +156,34 @@ class Ball:
 
 
 class Paddle:
-    def __init__(self, surface):
+    def __init__(self, surface, isMultiplayer = False):
         self.__surface = surface
         self.__position = [(220, 350)]
         self.__paddle = pygame.Rect(self.get_current_position()[0], self.get_current_position()[1], 10, 100)
+        self.__newPos = self.__position[0]
+        self.__isMultiplayer = isMultiplayer
 
-    def __move_paddle(self):
+    def __move_paddle_random(self):
         self.__direction = random.choice([(0, 4), (0, -4), (0, 5), (0, -5), (0, 3), (0, -3)])
         x, y = self.__direction
-        newPos = ((self.get_current_position()[0] + (x * 2)), (self.get_current_position()[1] + (y * 2)))
-        if newPos[1] > 600:
-            newPos = ((self.get_current_position()[0] + (x * 2)), 600)
-        elif newPos[1] < 120:
-            newPos = ((self.get_current_position()[0] + (x * 2)), 120)
+        self.__newPos = (220, (self.get_current_position()[1] + (y * 2)))
+        self.__check_newPos()
 
-        self.__position.insert(0, newPos)
+    def __move_paddle_multiplayer(self):
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_z]:
+            self.__newPos = (220, (self.get_current_position()[1] - 4))
+        elif pressed[pygame.K_s]:
+            self.__newPos = (220, (self.get_current_position()[1] + 4))
+        self.__check_newPos()
+
+    def __check_newPos(self):
+        if self.__newPos[1] > 600:
+            self.__newPos = (220, 600)
+        elif self.__newPos[1] < 120:
+            self.__newPos = (220, 120)
+
+        self.__position.insert(0, self.__newPos)
         if len(self.__position) > 1:
             self.__position.pop()
 
@@ -185,7 +198,10 @@ class Paddle:
         pygame.draw.rect(self.__surface, (0, 128, 255), self.__paddle)
 
     def update_paddle(self):
-        self.__move_paddle()
+        if not self.__isMultiplayer:
+            self.__move_paddle_random()
+        else:
+            self.__move_paddle_multiplayer()
         self.__draw_paddle()
 
 

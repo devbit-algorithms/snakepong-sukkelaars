@@ -16,10 +16,11 @@ mixer.music.load('assets/menu_music.mp3')
 
 # The Main Menu code where players start their journey
 class MainMenu:
-    def __init__(self):
+    def __init__(self, numberOfPlayers = 0):
         pygame.display.set_caption("SnakePong - The Main Menu")
         self.__surface = pygame.display.set_mode((1200, 800))
         self.__menu = pygame_menu.Menu(800, 600, 'Welcome to SnakePong!', theme=pygame_menu.themes.THEME_GREEN)
+        self.__numberOfPlayers = numberOfPlayers
 
         # Creating the menu widgets
         self.__username = self.__menu.add_text_input('Username :', default='Player X')
@@ -32,7 +33,7 @@ class MainMenu:
 
     def __start_the_game(self):
         self.__username = self.__username.get_value()  
-        game = Game(self.__surface, self.__username)
+        game = Game(self.__surface, self.__username, self.__numberOfPlayers)
         game.keeprunning()
         MainMenu()
         
@@ -63,7 +64,7 @@ class SettingsMenu:
 
     def __save_settings(self):
         # Save configuration to JSON file
-        MainMenu()
+        MainMenu(self.__numberOfPlayers.get_value()[1])
 
     def __exit_settings(self):
         MainMenu()

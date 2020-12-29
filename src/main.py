@@ -5,4 +5,4 @@ from menus import MainMenu
 
 
 # Opening up the Main Menu for the game
-mainMenu = MainMenu()
+mainMenu = MainMenu() 
