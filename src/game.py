@@ -24,9 +24,10 @@ class Game:
         # Initialize the game entities
         self.__ball = Ball(self.__surface)
         self.__score = self.__ball.get_score()
-        self.__playfield = Playfield(self.__surface, self.__username, self.__score)
+        self.__playfield = Playfield(
+        self.__surface, self.__username, self.__score)
         self.__surface = self.__playfield.getSurface()
-        self.__snake = Snake(self.__surface,self.__isRunning)
+        self.__snake = Snake(self.__surface, self.__isRunning)
         self.__food = Food(self.__surface)
 
         # Check if multiplayer or not
@@ -41,7 +42,7 @@ class Game:
             # Check if game is being closed manually
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                        self.__isRunning = False
+                    self.__isRunning = False
 
             # Check if game is done
             if self.__snake.game_over():
@@ -49,8 +50,8 @@ class Game:
                 mixer.music.stop()
                 self.__play_gameover_sound()
                 Tk().wm_withdraw()                  # Pop-up screen using tkinter library
-                messagebox.showinfo('GAME OVER - You a dead snake bruv','I admit that I touched myself/walls :\'(')
-            
+                messagebox.showinfo('GAME OVER - You a dead snake bruv', 'I admit that I touched myself/walls :\'(')
+
             # Check if snake eats the food
             elif self.__snake.get_head().colliderect(self.__food.show_food()):
                 self.__snake.set_length()
@@ -72,7 +73,7 @@ class Game:
             self.__update_game()
 
     def __update_game(self):
-        self.__surface.fill((0,0,0))
+        self.__surface.fill((0, 0, 0))
         self.__score = self.__ball.get_score()
         Playfield(self.__surface, self.__username, self.__score)
         self.__snake.update_snake()
@@ -92,4 +93,3 @@ class Game:
         if self.__soundsOn:
             gameover = mixer.Sound("assets/game_over_sound.wav")
             mixer.Sound.play(gameover)
-

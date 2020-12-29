@@ -6,7 +6,6 @@ pygame.init()
 pygame.font.init()
 
 
-
 # Classes
 class Playfield:
     def __init__(self, surface, username, score):
@@ -32,9 +31,8 @@ class Playfield:
 
     def __draw_score_username(self):
         font = pygame.font.SysFont('Comic Sans MS', 50)
-        text = font.render('Welcome {0}, this is your current score: {1}'.format(self.__username, self.__score), False, (255,255,255))
-        self.__surface.blit(text, (10,10))
-    
+        text = font.render('Welcome {0}, this is your current score: {1}'.format(self.__username, self.__score), False, (255, 255, 255))
+        self.__surface.blit(text, (10, 10))
+
     def getSurface(self):
         return self.__getSurface()
-
