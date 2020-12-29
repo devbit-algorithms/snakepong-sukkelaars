@@ -8,21 +8,19 @@ import json
 # Initialize the pygame environment and its components/modules
 pygame.init()
 
-# Play background music
-mixer.music.load('assets/menu_music.mp3')
-#mixer.music.play(-1)
-
 
 
 # The Main Menu code where players start their journey
 class MainMenu:
-    def __init__(self, numberOfPlayers = 0, soundsOn = True):
+    def __init__(self, numberOfPlayers = 0, soundsOn = True, musicOn = True):
         # Creating the menu and setting the variables
         pygame.display.set_caption("SnakePong - The Main Menu")
         self.__surface = pygame.display.set_mode((1200, 800))
         self.__menu = pygame_menu.Menu(800, 600, 'Welcome to SnakePong!', theme=pygame_menu.themes.THEME_GREEN)
         self.__numberOfPlayers = numberOfPlayers
         self.__soundsOn = soundsOn
+        self.__musicOn = musicOn
+        self.__play_background_music()
 
         # Creating the menu widgets
         self.__username = self.__menu.add_text_input('Username :', default='Player X')
@@ -37,20 +35,26 @@ class MainMenu:
         self.__username = self.__username.get_value()  
         game = Game(self.__surface, self.__username, self.__numberOfPlayers, self.__soundsOn)
         game.start_game()
-        MainMenu()
+        MainMenu(self.__numberOfPlayers, self.__soundsOn, self.__musicOn)
         
-
     def __start_settings_menu(self):
-        SettingsMenu(self.__surface, self.__soundsOn)
+        SettingsMenu(self.__surface, self.__soundsOn, self.__musicOn)
+
+    def __play_background_music(self):
+        # Check if music is allowed and play background music accordingly
+        if self.__musicOn:
+            mixer.music.load('assets/menu_music.mp3')
+            mixer.music.play(-1)
 
 # The menu used for changing the settings
 class SettingsMenu:
-    def __init__(self, surface, soundsOn):
+    def __init__(self, surface, soundsOn, musicOn):
         # Creating the menu and setting the variables
         pygame.display.set_caption("SnakePong - The Settings Menu")
         menu = pygame_menu.Menu(800, 600, 'Welcome to SnakePong!', theme=pygame_menu.themes.THEME_SOLARIZED)
         self.__surface = surface
         self.__soundsOn = soundsOn
+        self.__musicOn = musicOn
 
         # Creating the menu widgets
         self.__numberOfPlayers = menu.add_selector('Players: ', [('1 Player', 1), ('2 Players', 2)])
@@ -70,18 +74,22 @@ class SettingsMenu:
 
     def __save_settings(self):
         # Save configuration to JSON file or other file - could be implemented
-        MainMenu(self.__numberOfPlayers.get_value()[1], self.__soundsOn)
+        MainMenu(self.__numberOfPlayers.get_value()[1], self.__soundsOn, self.__musicOn)
 
     def __exit_settings(self):
         MainMenu()
 
     def __set_music(self):
+        # Code that sets the music for the game
         if mixer.music.get_busy() == 1:
             mixer.music.stop()
+            self.__musicOn = False
         else:
             mixer.music.play()
+            self.__musicOn = True
 
     def __set_sounds(self):
+        # Code that allows sounds in the game
         if self.__soundsOn:
             self.__soundsOn = False
         else:
