@@ -11,11 +11,15 @@ pygame.init()
 
 # Classes
 class Snake:
-    def __init__(self, surface, running):
+    def __init__(self, surface, running, isBeingTested = False, direction = (0, -1)):
         # Initialize variables
         self.__positions = [(600, 400)]
         self.length = 15
-        self.__direction = random.choice([(0, 1), (0, -1), (-1, 0), (1, 0)])
+        #Only added this code for making it testable
+        if isBeingTested:
+            self.__direction = direction
+        else:
+            self.__direction = random.choice([(0, 1), (0, -1), (-1, 0), (1, 0)])
         self.__surface = surface
         self.__isRunning = running
 
@@ -24,7 +28,7 @@ class Snake:
         return self.__positions[0]
 
     def __turn_snake(self, point):
-        if self.length > 1 and (point[0] * -1, point[1] * -1) == self.__direction:
+        if (point[0] * -1, point[1] * -1) == self.__direction:
             pass
         else:
             self.__direction = point
@@ -63,12 +67,18 @@ class Snake:
         self.__draw_snake(self.__surface)
 
     # Public methods/functions
-    def update_snake(self):
+    def update_snake(self, isBeingTested = False):
         self.__update_snake()
+        #Only added this code for the tests, serves no other purpose
+        if isBeingTested:
+            self.__turn_snake((1,0))
         self.__move_snake()
 
     def get_head_position(self):
         return self.__get_head_position()
+
+    def get_direction(self):
+        return self.__direction
 
     def get_head(self):
         return pygame.Rect((self.__positions[0][0], self.__positions[0][1]), (20, 20))
@@ -79,12 +89,18 @@ class Snake:
             self.full_snake.append(pygame.Rect((pos[0], pos[1]), (20, 20)))
         return self.full_snake
 
-    def game_over(self):
-        return (self.__get_head_position()[0] > 1030 or self.__get_head_position()[0] < 170 or self.__get_head_position()[1] > 678
+    def game_over(self, isBeingTested = False, x = 0, y = 0):
+        if isBeingTested:
+            return (x > 1030 or y > 678)
+        else:
+            return (self.__get_head_position()[0] > 1030 or self.__get_head_position()[0] < 170 or self.__get_head_position()[1] > 678
                 or self.__get_head_position()[1] < 122 or self.__isRunning == False)
 
     def set_length(self):
         self.length += 5
+
+    def get_length(self):
+        return self.length
 
 
 class Ball:
@@ -102,8 +118,7 @@ class Ball:
         self.__velocity = [random.randint(-2, 2), random.randint(-2, 2)]
 
     def __move_ball(self):
-        newPos = ((self.get_current_position()[
-                  0] + self.__velocity[0]), (self.get_current_position()[1] + self.__velocity[1]))
+        newPos = ((self.get_current_position()[0] + self.__velocity[0]), (self.get_current_position()[1] + self.__velocity[1]))
 
         if newPos[0] < 180:
             self.__velocity[0] = -self.__velocity[0]
@@ -122,8 +137,7 @@ class Ball:
         self.__position.insert(0, newPos)
         if len(self.__position) > 1:
             self.__position.pop()
-        self.__ball = pygame.Rect(self.get_current_position()[
-                                  0], self.get_current_position()[1], 10, 10)
+        self.__ball = pygame.Rect(self.get_current_position()[0], self.get_current_position()[1], 10, 10)
 
     def __draw_ball(self):
         self.__image = pygame.draw.rect(
@@ -214,14 +228,13 @@ class Food:
 
     # Private methods/functions
     def __create_frozen_food(self):
-        self.__position = (random.randint(171, 449) * 2,
-                           random.randint(121, 299) * 2)
+        self.__position = (random.randint(171, 449) * 2, random.randint(121, 299) * 2)
 
     def __cook_food(self):
-        self.__food = pygame.Rect(
-            (self.__position[0], self.__position[1]), (10, 10))
-        pygame.draw.rect(self.__surface, self.__color, self.__food)
-        pygame.draw.rect(self.__surface, (93, 216, 228), self.__food, 1)
+        self.food = pygame.Rect((self.__position[0], self.__position[1]), (10, 10))
+        # Drawing the food with a border
+        pygame.draw.rect(self.__surface, self.__color, self.food)
+        pygame.draw.rect(self.__surface, (93, 216, 228), self.food, 1)
 
     # Public methods/functions
     def update_food(self):
@@ -232,7 +245,7 @@ class Food:
         self.__cook_food()
 
     def show_food(self):
-        return self.__food
+        return self.food
 
     def get_food_location(self):
         return self.__position

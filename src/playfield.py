@@ -34,5 +34,12 @@ class Playfield:
         text = font.render('Welcome {0}, this is your current score: {1}'.format(self.__username, self.__score), False, (255, 255, 255))
         self.__surface.blit(text, (10, 10))
 
-    def getSurface(self):
+    def get_surface(self):
         return self.__getSurface()
+
+    # Code for testing the class
+    def get_username(self):
+        return self.__username
+
+    def get_score(self):
+        return self.__score
