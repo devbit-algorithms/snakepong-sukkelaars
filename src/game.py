@@ -26,7 +26,7 @@ class Game:
         self.__score = self.__ball.get_score()
         self.__playfield = Playfield(
         self.__surface, self.__username, self.__score)
-        self.__surface = self.__playfield.getSurface()
+        self.__surface = self.__playfield.get_surface()
         self.__snake = Snake(self.__surface, self.__isRunning)
         self.__food = Food(self.__surface)
 
@@ -93,3 +93,10 @@ class Game:
         if self.__soundsOn:
             gameover = mixer.Sound("assets/game_over_sound.wav")
             mixer.Sound.play(gameover)
+
+    # Code for testing the Game class
+    def get_username(self):
+        return self.__username
+    
+    def get_numberOfPlayers(self):
+        return self.__numberOfPlayers
